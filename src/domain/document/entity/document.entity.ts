@@ -53,7 +53,6 @@ export class Document extends Entity {
     }
   }
 
-  // Getters
   get employeeId(): string {
     return this._employeeId;
   }
@@ -94,7 +93,6 @@ export class Document extends Entity {
     return this._updatedAt;
   }
 
-  // Business methods
   public updateName(name: string): Document {
     if (!name || name.trim() === '') {
       throw new Error('Nome do documento é obrigatório');
@@ -174,6 +172,62 @@ export class Document extends Entity {
       approvedAt: this._approvedAt,
       rejectedAt: new Date(),
       rejectionReason,
+      createdAt: this._createdAt,
+      updatedAt: new Date()
+    });
+  }
+
+  public updateStatus(status: string): Document {
+    return new Document({
+      id: this._id,
+      employeeId: this._employeeId,
+      documentTypeId: this._documentTypeId,
+      name: this._name,
+      status,
+      sentAt: this._sentAt,
+      approvedAt: this._approvedAt,
+      rejectedAt: this._rejectedAt,
+      rejectionReason: this._rejectionReason,
+      createdAt: this._createdAt,
+      updatedAt: new Date()
+    });
+  }
+
+  public updateEmployeeId(employeeId: string): Document {
+    if (!employeeId || employeeId.trim() === '') {
+      throw new Error('ID do colaborador é obrigatório');
+    }
+
+    return new Document({
+      id: this._id,
+      employeeId,
+      documentTypeId: this._documentTypeId,
+      name: this._name,
+      status: this._status,
+      sentAt: this._sentAt,
+      approvedAt: this._approvedAt,
+      rejectedAt: this._rejectedAt,
+      rejectionReason: this._rejectionReason,
+      createdAt: this._createdAt,
+      updatedAt: new Date()
+    });
+  }
+
+  public updateDocumentTypeId(documentTypeId: string): Document {
+    if (!documentTypeId || documentTypeId.trim() === '') {
+      throw new Error('ID do tipo de documento é obrigatório');
+    }
+
+    return new Document({
+      id: this._id,
+      employeeId: this._employeeId,
+      documentTypeId,
+      name: this._name,
+      status: this._status,
+      sentAt: this._sentAt,
+      approvedAt: this._approvedAt,
+      rejectedAt: this._rejectedAt,
+      rejectionReason: this._rejectionReason,
       createdAt: this._createdAt,
       updatedAt: new Date()
     });

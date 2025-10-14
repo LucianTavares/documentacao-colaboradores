@@ -15,13 +15,10 @@ export class CPF {
   private isValid(cpf: string): boolean {
     const cleanCPF = this.clean(cpf);
     
-    // Verifica se tem 11 dígitos
     if (cleanCPF.length !== 11) return false;
     
-    // Verifica se todos os dígitos são iguais
     if (/^(\d)\1{10}$/.test(cleanCPF)) return false;
     
-    // Validação do primeiro dígito verificador
     let sum = 0;
     for (let i = 0; i < 9; i++) {
       sum += parseInt(cleanCPF.charAt(i)) * (10 - i);
@@ -31,7 +28,6 @@ export class CPF {
     
     if (parseInt(cleanCPF.charAt(9)) !== firstDigit) return false;
     
-    // Validação do segundo dígito verificador
     sum = 0;
     for (let i = 0; i < 10; i++) {
       sum += parseInt(cleanCPF.charAt(i)) * (11 - i);

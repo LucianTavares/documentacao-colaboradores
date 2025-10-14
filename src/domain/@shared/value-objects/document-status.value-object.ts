@@ -40,16 +40,12 @@ export class DocumentStatus {
   }
 
   canTransitionTo(newStatus: DocumentStatus): boolean {
-    // PENDING -> SENT
     if (this.isPending() && newStatus.isSent()) return true;
     
-    // SENT -> APPROVED
     if (this.isSent() && newStatus.isApproved()) return true;
     
-    // SENT -> REJECTED
     if (this.isSent() && newStatus.isRejected()) return true;
     
-    // APPROVED e REJECTED são estados finais
     return false;
   }
 

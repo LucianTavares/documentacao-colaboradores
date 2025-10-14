@@ -33,14 +33,12 @@ describe('CPF Value Object unit tests', () => {
   })
 
   it('should validate real CPF', () => {
-    // CPF válido: 32833025025
     const cpf = new CPF('32833025025');
     expect(cpf.getValue()).toBe('32833025025');
     expect(cpf.getFormatted()).toBe('328.330.250-25');
   })
 
   it('should validate real CPF with formatting', () => {
-    // CPF válido: 988.423.320-97
     const cpf = new CPF('328.330.250-25');
     expect(cpf.getValue()).toBe('32833025025');
     expect(cpf.getFormatted()).toBe('328.330.250-25');

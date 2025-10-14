@@ -50,23 +50,18 @@ describe('DocumentStatus Value Object unit tests', () => {
     const approved = new DocumentStatus('APPROVED');
     const rejected = new DocumentStatus('REJECTED');
 
-    // PENDING -> SENT
     expect(pending.canTransitionTo(sent)).toBe(true);
     expect(pending.canTransitionTo(approved)).toBe(false);
     expect(pending.canTransitionTo(rejected)).toBe(false);
 
-    // SENT -> APPROVED
     expect(sent.canTransitionTo(approved)).toBe(true);
-    // SENT -> REJECTED
     expect(sent.canTransitionTo(rejected)).toBe(true);
     expect(sent.canTransitionTo(pending)).toBe(false);
 
-    // APPROVED (final state)
     expect(approved.canTransitionTo(pending)).toBe(false);
     expect(approved.canTransitionTo(sent)).toBe(false);
     expect(approved.canTransitionTo(rejected)).toBe(false);
 
-    // REJECTED (final state)
     expect(rejected.canTransitionTo(pending)).toBe(false);
     expect(rejected.canTransitionTo(sent)).toBe(false);
     expect(rejected.canTransitionTo(approved)).toBe(false);
