@@ -1,0 +1,198 @@
+### API de Gerenciamento de Documentação de Colaboradores
+### Base URL: http://localhost:3000
+
+### ============================================
+### INSTRUÇÕES DE USO
+### ============================================
+### 1. Execute os testes na ordem sequencial
+### 2. IMPORTANTE: Salve os IDs retornados nas respostas para usar nas próximas requisições
+### 3. Use o VS Code REST Client ou IntelliJ HTTP Client
+### 4. Acesse http://localhost:3000/api para documentação Swagger
+### 5. Para testar: Execute o "FLUXO COMPLETO" (seção 8) substituindo os IDs pelos reais
+###
+### COMO USAR:
+### 1. Execute o Passo 1 (Criar Colaborador)
+### 2. Copie o ID retornado na resposta
+### 3. Substitua "SUBSTITUA_PELO_ID_DO_COLABORADOR" pelo ID real
+### 4. Execute o Passo 2 (Criar Tipo de Documento)
+### 5. Copie o ID retornado e substitua "SUBSTITUA_PELO_ID_DO_TIPO_DOCUMENTO"
+### 6. Continue com os próximos passos...
+
+### ============================================
+### CONFIGURAÇÃO DE VARIÁVEIS
+### ============================================
+@baseUrl = http://localhost:3000
+@employeeId = 98e7fb0a-7b3f-40ca-b08b-05bfe9b32737
+@documentTypeId = 78efc9b6-4ff6-42ae-b980-7195be7d7474
+@documentId = d13af8a8-ec9c-4abc-8608-ef209a424a41
+
+### ============================================
+### 1. COLABORADORES (Employees) - FLUXO SEQUENCIAL
+### ============================================
+
+### Passo 1: Criar Colaborador
+POST {{baseUrl}}/employees
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "document": "32833025025",
+  "hiredAt": "2023-01-15T00:00:00.000Z"
+}
+
+### Passo 2: Listar Todos os Colaboradores
+GET {{baseUrl}}/employees
+
+### Passo 3: Buscar Colaborador por ID (ID capturado automaticamente)
+GET {{baseUrl}}/employees/{{employeeId}}
+
+### Passo 4: Atualizar Colaborador
+PUT {{baseUrl}}/employees/{{employeeId}}
+Content-Type: application/json
+
+{
+  "name": "João Silva Santos",
+  "document": "32833025025",
+  "hiredAt": "2023-01-15T00:00:00.000Z"
+}
+
+### Passo 5: Deletar Colaborador
+DELETE {{baseUrl}}/employees/{{employeeId}}
+
+### ============================================
+### 2. TIPOS DE DOCUMENTO (Document Types)
+### ============================================
+
+### Passo 1: Criar Tipo de Documento
+POST {{baseUrl}}/document-types
+Content-Type: application/json
+
+{
+  "name": "CPF"
+}
+
+### Passo 2: Criar Outro Tipo de Documento
+POST {{baseUrl}}/document-types
+Content-Type: application/json
+
+{
+  "name": "Carteira de Trabalho"
+}
+
+### Passo 3: Listar Todos os Tipos de Documento
+GET {{baseUrl}}/document-types
+
+### Passo 4: Buscar Tipo de Documento por ID
+GET {{baseUrl}}/document-types/{{documentTypeId}}
+
+### Passo 5: Atualizar Tipo de Documento
+PUT {{baseUrl}}/document-types/{{documentTypeId}}
+Content-Type: application/json
+
+{
+  "name": "CPF Atualizado"
+}
+
+### Passo 6: Deletar Tipo de Documento
+DELETE {{baseUrl}}/document-types/{{documentTypeId}}
+
+### ============================================
+### 3. DOCUMENTOS (Documents)
+### ============================================
+
+### Criar Documento
+POST {{baseUrl}}/documents
+Content-Type: application/json
+
+{
+  "name": "Documento CPF do João",
+  "status": "PENDING",
+  "employeeId": "{{employeeId}}",
+  "documentTypeId": "{{documentTypeId}}"
+}
+
+### Listar Todos os Documentos
+GET http://localhost:3000/documents
+
+### Buscar Documento por ID
+GET http://localhost:3000/documents/{{documentId}}
+
+### Atualizar Documento
+PUT http://localhost:3000/documents/{{documentId}}
+Content-Type: application/json
+
+{
+  "name": "Documento CPF Atualizado",
+  "status": "PENDING",
+  "employeeId": "{{employeeId}}",
+  "documentTypeId": "{{documentTypeId}}"
+}
+
+### Marcar Documento como Enviado
+PATCH http://localhost:3000/documents/{{documentId}}/mark-as-sent
+
+### Marcar Documento como Aprovado
+PATCH http://localhost:3000/documents/{{documentId}}/mark-as-approved
+
+### Marcar Documento como Rejeitado
+PATCH http://localhost:3000/documents/{{documentId}}/mark-as-rejected
+Content-Type: application/json
+
+{
+  "rejectionReason": "Documento ilegível"
+}
+
+### Deletar Documento
+DELETE http://localhost:3000/documents/{{documentId}}
+
+### ============================================
+### 4. VINCULAÇÃO DE COLABORADORES (Employee Document Types)
+### ============================================
+
+### Vincular Colaborador a Tipo de Documento
+POST {{baseUrl}}/employee-document-types/link
+Content-Type: application/json
+
+{
+  "employeeId": "{{employeeId}}",
+  "documentTypeId": "{{documentTypeId}}",
+  "isRequired": true
+}
+
+### Desvincular Colaborador de Tipo de Documento
+DELETE {{baseUrl}}/employee-document-types/unlink
+Content-Type: application/json
+
+{
+  "employeeId": "{{employeeId}}",
+  "documentTypeId": "{{documentTypeId}}"
+}
+
+### ============================================
+### 5. STATUS DA DOCUMENTAÇÃO (Employee Document Status)
+### ============================================
+
+### Obter Status da Documentação de um Colaborador
+GET {{baseUrl}}/employee-document-status/{{employeeId}}
+
+### ============================================
+### 6. DOCUMENTOS PENDENTES (Pending Documents)
+### ============================================
+
+### Listar Todos os Documentos Pendentes
+GET {{baseUrl}}/pending-documents
+
+### Listar Documentos Pendentes com Filtro por Colaborador
+GET {{baseUrl}}/pending-documents?employeeId={{employeeId}}
+
+### Listar Documentos Pendentes com Filtro por Tipo de Documento
+GET {{baseUrl}}/pending-documents?documentTypeId={{documentTypeId}}
+
+### Listar Documentos Pendentes com Filtros Combinados
+GET {{baseUrl}}/pending-documents?employeeId={{employeeId}}&documentTypeId={{documentTypeId}}
+
+### Listar Documentos Pendentes com Paginação
+GET {{baseUrl}}/pending-documents?page=1&limit=5
+
+### Listar Documentos Pendentes com Todos os Filtros
+GET {{baseUrl}}/pending-documents?employeeId={{employeeId}}&documentTypeId={{documentTypeId}}&page=1&limit=10
